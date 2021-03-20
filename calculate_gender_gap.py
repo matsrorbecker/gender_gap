@@ -6,6 +6,7 @@ NUMBER_OF_PARTIES = 10
 filename = sys.argv[1]
 
 output = []
+output.append(['month', 'gender_gap1', 'gender_gap2'])
 
 def to_float(str):
     return 0 if str == '..' else float(str)
