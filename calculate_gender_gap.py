@@ -14,7 +14,13 @@ with open(filename, newline='') as f:
     reader = csv.reader(f)
     header_row = next(reader)
     age_group = re.search('(\d{2}-\d{2})|(\d{2}\+)', header_row[1]).group()
+    first_row = True
     for row in reader:
+        if first_row:
+            start_month = row[0]
+            first_row = False
+        else:
+            end_month = row[0]
         gender_gap1 = 0 # sum of all differences
         gender_gap2 = 0 # sum of all significant (at 95% level) differences
         for i in range(1, NUMBER_OF_PARTIES + 1):
@@ -28,7 +34,7 @@ with open(filename, newline='') as f:
                 gender_gap2 += difference
         output.append([row[0], "{:.1f}".format(gender_gap1), "{:.1f}".format(gender_gap2)])
 
-with open(f"gender_gap_{age_group}yr.csv", 'w', newline='') as f:
+with open(f"gender_gap_{age_group}yr_{start_month}-{end_month}.csv", 'w', newline='') as f:
     writer = csv.writer(f, delimiter=',')
     for row in output:
         writer.writerow(row)
