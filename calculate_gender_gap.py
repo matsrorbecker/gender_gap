@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import csv, sys
+import csv, sys, re
 NUMBER_OF_PARTIES = 10
 
 filename = sys.argv[1]
@@ -12,7 +12,8 @@ def to_float(str):
 
 with open(filename, newline='') as f:
     reader = csv.reader(f)
-    next(reader) # skip header row
+    header_row = next(reader)
+    age_group = re.search('(\d{2}-\d{2})|(\d{2}\+)', header_row[1]).group()
     for row in reader:
         gender_gap1 = 0 # sum of all differences
         gender_gap2 = 0 # sum of all significant (at 95% level) differences
@@ -27,7 +28,7 @@ with open(filename, newline='') as f:
                 gender_gap2 += difference
         output.append([row[0], "{:.1f}".format(gender_gap1), "{:.1f}".format(gender_gap2)])
 
-with open('output.csv', 'w', newline='') as f:
+with open(f"gender_gap_{age_group}yr.csv", 'w', newline='') as f:
     writer = csv.writer(f, delimiter=',')
     for row in output:
         writer.writerow(row)
