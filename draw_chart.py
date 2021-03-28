@@ -5,28 +5,23 @@ import matplotlib.pyplot as plt
 
 filename = sys.argv[1]
 
-x_data = []
-y_data1 = []
-y_data2 = []
+data = {}
 
 with open(filename, newline='') as f:
     reader = csv.reader(f)
-    header_row = next(reader)
-    x_label = header_row[0]
-    y_label1 = header_row[1]
-    y_label2 = header_row[2]
+    labels = next(reader)
+    x_label = labels[0]
+    for label in labels:
+        data[label] = []
     for row in reader:
-        x_data.append(row[0])
-        y_data1.append(float(row[1]))
-        y_data2.append(float(row[2]))
+        data[x_label].append(row[0])
+        for i in range(1, len(labels)):
+            data[labels[i]].append(float(row[i]))
 
-data = {}
-data[x_label] = x_data
-data[y_label1] = y_data1
-data[y_label2] = y_data2
+for i in range(1, len(labels)):
+    plt.plot(data[x_label], data[labels[i]])
 
-plt.plot(x_label, y_label1, y_label2, data=data)
 plt.ylim(bottom=-1)
 plt.xticks(rotation='vertical')
-plt.legend([y_label1, y_label2])
+plt.legend(labels[1:len(labels)])
 plt.show()
