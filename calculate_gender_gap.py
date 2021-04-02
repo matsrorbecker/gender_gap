@@ -31,7 +31,7 @@ with open(filename, newline='') as f:
             gender_gap1 += difference
             error_margin_men = float(row[i + NUMBER_OF_PARTIES * 2])
             error_margin_women = float(row[i + NUMBER_OF_PARTIES * 3])
-            if difference - error_margin_men - error_margin_women > 0:
+            if difference - error_margin_men - error_margin_women >= 0.1:
                 gender_gap2 += difference
         output.append([row[0], "{:.1f}".format(gender_gap1), "{:.1f}".format(gender_gap2)])
 
